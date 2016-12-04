@@ -1,0 +1,41 @@
+; convert-matrix  -v 1 -i $RSAT/public_html/tmp/www-data/2016/11/30/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.tf -from transfac -to tab -return counts -o $RSAT/public_html/tmp/www-data/2016/11/30/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt
+; Input files
+;	input	/export/home1/rsat/rsat/public_html/tmp/www-data/2016/11/30/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.tf
+; Input format        	transfac
+; Output files
+;	output	/export/home1/rsat/rsat/public_html/tmp/www-data/2016/11/30/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt
+; Output format       	tab
+; pseudo-weight       	1
+a	7	10	7	0	0	0	0	3	19	0	7	7	9
+c	1	7	2	19	1	0	2	17	0	2	10	2	4
+g	5	1	1	0	0	20	2	0	1	0	0	4	3
+t	7	2	10	1	19	0	16	0	0	18	3	7	4
+//
+a	3	4	43	0	0	9	1	6	0	16	10
+c	2	17	0	2	38	34	1	2	42	14	6
+g	22	9	0	0	5	0	39	35	1	9	2
+t	16	13	0	41	0	0	2	0	0	4	25
+//
+a	5	6	3	0	0	0	0	3	14	0	7	6	9
+c	1	6	0	14	0	0	2	11	0	1	4	2	2
+g	2	0	1	0	0	14	0	0	0	0	0	2	1
+t	6	2	10	0	14	0	12	0	0	13	3	4	2
+//
+a	3	1	0	0	0	0	9	0	5	4
+c	6	0	0	9	9	0	0	9	1	1
+g	0	7	9	0	0	0	0	0	2	4
+t	0	1	0	0	0	9	0	0	1	0
+//
+a	2	0	0	0	0	0	8	0	1	2
+c	2	5	0	8	0	0	0	0	5	4
+g	2	2	8	0	0	0	0	0	1	0
+t	2	1	0	0	8	8	0	8	1	2
+//
+; Host name	rsat01
+; Job started	2016-11-30.180351
+; Job done	2016-11-30.180351
+; Seconds	0.2
+;	user	0.2
+;	system	0.03
+;	cuser	0
+;	csystem	0

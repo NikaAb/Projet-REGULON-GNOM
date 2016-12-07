@@ -8,7 +8,7 @@ Nika Abdollahi & Melissa Cardon
 """
 
 import numpy as np
-
+import math
 
 #========================================================================
 #                          Import functions
@@ -90,16 +90,29 @@ def chi_2_col(col_X, col_Y):
             
     return(chi2col)
 
+##########################################################################
+
+def SSD (col_X, col_Y):
+	SSD2=0
+	sum_col_X = sum(col_X)
+	sum_col_Y = sum(col_Y)
+	for Nucleotide in range(len(col_X)):
+		SSD2+= math.pow(((float(col_X[Nucleotide])/sum_col_X)-(float(col_Y[Nucleotide])/sum_col_Y)),2)
+	print SSD2
+	return 2-SSD2
 
 
 
+##########################################################################
+
+#nuc, PSSM_all = parse_PSSM("./Datas/Q1_PSSM.txt")
 
 
-
-
-nuc, PSSM_all = parse_PSSM("./Datas/Q1_PSSM.txt")
-
+nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
 print(nuc)
+print PSSM_all[0] # un PPSM 
+print PSSM_all[1] # un autre PSSM ! 
+"""
 for PSSM  in PSSM_all:
 	print("     ")
 	for l in PSSM:
@@ -110,9 +123,29 @@ PSSM_all_psc = PSSM_pseudocount(PSSM_all, 0.1)
 for PSSM  in PSSM_all_psc:
 	print("     ")
 	print(PSSM)
+"""
 
 
 
+
+
+
+A= PSSM_all[0] # un PPSM 
+a = np.array(A)
+for l in a:
+	print l
+print a[:,2]
+B= PSSM_all[1] # un autre PSSM ! 
+b= np.array(B)
+for l in b:
+	print l
+print b[:,2]
+
+
+
+col_X=a[:,2]
+col_Y= b[:,2]
+print SSD (col_X, col_Y)
 
 
 

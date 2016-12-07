@@ -111,7 +111,7 @@ def SSD (col_X, col_Y):
 	sum_col_Y = sum(col_Y)
 	for Nucleotide in range(len(col_X)):
 		SSD2+= math.pow(((float(col_X[Nucleotide])/sum_col_X)-(float(col_Y[Nucleotide])/sum_col_Y)),2)
-	print SSD2
+	#print SSD2
 	return 2-SSD2
 
 
@@ -134,13 +134,30 @@ def PCC(col_X, col_Y):
 
 
 ##########################################################################
+def AKL(col_X, col_Y):
+    """
+    input : PSSM with frequencies (with pseudocount > no zero !!)
+    returns Average Kullback–Leibler score (Ref4)
+    """
+    log_col_X = np.log(col_X)
+    log_col_Y = np.log(col_Y)
+    diff_log_XY = log_col_X - log_col_Y
+    
+    result = 10 - (np.sum(col_X * diff_log_XY) + np.sum(-col_Y * diff_log_XY))/float(2)
+    
+    return(result)
+    
+
+
+##########################################################################
 
 nuc, PSSM_all = parse_PSSM("./Datas/Q1_PSSM.txt")
 
+PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 
 #print(nuc)
-print PSSM_all[0] # un PPSM 
-print PSSM_all[1] # un autre PSSM ! 
+print PSSM_all_freqs[0] # un PPSM 
+print PSSM_all_freqs[1] # un autre PSSM ! 
 """
 for PSSM  in PSSM_all:
 	print("     ")
@@ -159,12 +176,12 @@ for PSSM  in PSSM_all_psc:
 
 
 
-A= PSSM_all[0] # un PPSM 
+A= PSSM_all_freqs[0] # un PPSM 
 a = np.array(A)
 for l in a:
 	print l
 print a[:,2]
-B= PSSM_all[1] # un autre PSSM ! 
+B= PSSM_all_freqs[1] # un autre PSSM ! 
 b= np.array(B)
 for l in b:
 	print l
@@ -174,8 +191,19 @@ print b[:,2]
 
 col_X=a[:,2]
 col_Y= b[:,2]
-print(SSD (col_X, col_Y))
-print(PCC(col_X, col_X))
+
+print("\nCompare 2 different columns")
+print("SSD",SSD(col_X, col_Y))
+print("PCC",PCC(col_X, col_Y))
+print("AKL",AKL(col_X, col_Y))
+
+print("\nCompare 2 identical columns")
+print("SSD col_X",SSD(col_X, col_X))
+print("SSD col_Y",SSD(col_Y, col_Y))
+print("PCC col_X",PCC(col_X, col_X))
+print("PCC col_Y",PCC(col_Y, col_Y))
+print("AKL col_X",AKL(col_X, col_X))
+print("AKL col_Y",AKL(col_Y, col_Y))
 
 
 

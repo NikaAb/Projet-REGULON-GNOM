@@ -61,6 +61,19 @@ def PSSM_pseudocount(PSSM_all, pseudocount):
     return(PSSM_all_psc)
 
 
+def PSSM_freqs(PSSM_all, pseudocount):
+    """
+    returns PSSM with each col as freq instead of count
+    (with pseudocounts)
+    """
+    PSSM_all_psc = PSSM_pseudocount(PSSM_all, pseudocount)
+    
+    PSSM_all_f = []
+    for PSSM in PSSM_all_psc:
+        PSSM_colsums = np.sum(PSSM,0,dtype='float')
+        PSSM_all_f.append(PSSM / PSSM_colsums)
+    
+    return(PSSM_all_f)
 
 
 
@@ -75,7 +88,7 @@ def chi_2_col(col_X, col_Y):
     
     Returns chi2 value for 2 columns (formula ref_4)
     """
-    nb_nuc = col_X.shape()[0]
+    nb_nuc = len(col_X)
     N = sum(col_X) + sum(col_Y)
     chi2col = 0
     
@@ -104,12 +117,28 @@ def SSD (col_X, col_Y):
 
 
 ##########################################################################
+def PCC(col_X, col_Y):
+    """
+    input : PSSM with frequencies
+    returns pearson correlation coef
+    """
+    nb_nuc = len(col_X)
+    
+    mu = 1/float(nb_nuc)
+    col_X_centered = col_X - mu
+    col_Y_centered = col_Y - mu
+    numerateur = np.sum(col_X_centered * col_Y_centered )
+    denominateur = (np.sum(col_X_centered**2))*(np.sum(col_Y_centered**2))
+    
+    return( numerateur / float(denominateur))
 
-#nuc, PSSM_all = parse_PSSM("./Datas/Q1_PSSM.txt")
+
+##########################################################################
+
+nuc, PSSM_all = parse_PSSM("./Datas/Q1_PSSM.txt")
 
 
-nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
-print(nuc)
+#print(nuc)
 print PSSM_all[0] # un PPSM 
 print PSSM_all[1] # un autre PSSM ! 
 """
@@ -145,7 +174,8 @@ print b[:,2]
 
 col_X=a[:,2]
 col_Y= b[:,2]
-print SSD (col_X, col_Y)
+print(SSD (col_X, col_Y))
+print(PCC(col_X, col_X))
 
 
 

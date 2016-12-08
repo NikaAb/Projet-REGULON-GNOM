@@ -108,10 +108,8 @@ def chi_2_col(col_X, col_Y):
 
 def SSD (col_X, col_Y):
 	SSD2=0
-	sum_col_X = sum(col_X)
-	sum_col_Y = sum(col_Y)
 	for Nucleotide in range(len(col_X)):
-		SSD2+= math.pow(((float(col_X[Nucleotide])/sum_col_X)-(float(col_Y[Nucleotide])/sum_col_Y)),2)
+		SSD2+= math.pow((col_X[Nucleotide]-col_Y[Nucleotide]),2)
 	#print SSD2
 	return 2-SSD2
 
@@ -148,15 +146,40 @@ def AKL(col_X, col_Y):
     
     return(result)
     
+#<<<<<<< Updated upstream
 
 
 #========================================================================
-#                         Compare 2 PSSM
+#                         Compare PSSM
 #========================================================================
+"""
+def Matix_Score(listPSSM):
+    n=len(listPSSM)
+    Matix_Score=np.zeros((n,n))
+
+    List_Of_PSSM_Ind=listCombinaton(list(range(0, len(PSSM_all_freqs))))
+    for Deux_PSSM in List_Of_PSSM_Ind:
+        A=listPSSM[Deux_PSSM[0]]
+        B=listPSSM[Deux_PSSM[1]]
+        if len(A)>len(B):
+            score= alignit(A,B,-1,"SSD")
+        else :
+            score= alignit(B,A,-1,"SSD")
+        Matix_Score[Deux_PSSM[0]-1,Deux_PSSM[1]-1]=score
+    print Matix_Score
 
 
 
-
+def Normalise_Mtrix_Score(MatixScore):
+"""
+def listCombinaton(listPSSM):
+    #print list(range(0, len(listPSSM)))
+    listoflist=[]
+    for l in range(len(listPSSM)):
+        for k in range(l,len(listPSSM)):
+            listoflist.append([listPSSM[l],listPSSM[k]])
+    #print listoflist
+    return listoflist
 
 
 #========================================================================
@@ -194,13 +217,31 @@ clusters_Aff_prop = calcul_clusters_Aff_prop.labels_
 #========================================================================
 #                          Use the functions
 #========================================================================
-nuc, PSSM_all = parse_PSSM("./Datas/Q1_PSSM.txt")
+#nuc, PSSM_all = parse_PSSM("./Datas/Q1_PSSM.txt")
 
+##########################################################################
+def ChooseMetric(col_X, col_Y,metric):
+    if metric =="SSD":
+        res= SSD(col_X, col_Y)
+    elif metric== "PCC":
+        res= PCC(col_X, col_Y)
+    elif metric== "AKL":
+        res= AKL(col_X, col_Y)
+    else:
+        print "ChooseMetric :: Error, model not found"
+    return res
+
+##########################################################################
+#>>>>>>> Stashed changes
+
+#nuc, PSSM_all = parse_PSSM("./Datas/Q1_PSSM.txt")
+nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
+#nuc, PSSM_all = parse_PSSM("./../Datas/test.txt")
 PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 
 #print(nuc)
-print PSSM_all_freqs[0] # un PPSM 
-print PSSM_all_freqs[1] # un autre PSSM ! 
+#print PSSM_all_freqs[0] # un PPSM 
+#print PSSM_all_freqs[1] # un autre PSSM ! 
 """
 for PSSM  in PSSM_all:
 	print("     ")
@@ -217,7 +258,7 @@ for PSSM  in PSSM_all_psc:
 
 
 
-
+"""
 
 A= PSSM_all_freqs[0] # un PPSM 
 a = np.array(A)
@@ -249,7 +290,7 @@ print("AKL col_X",AKL(col_X, col_X))
 print("AKL col_Y",AKL(col_Y, col_Y))
 
 
-
+"""
 
 
 

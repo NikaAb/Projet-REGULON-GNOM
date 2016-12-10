@@ -1,6 +1,111 @@
-import sys
+# -*- coding: utf-8 -*-
+
+"""
+Projet REGULON - GENOM
+Nika Abdollahi & Melissa Cardon
+
+12-2016
+"""
+
 import numpy as np
-from f_import2 import *
+import sys
+import math
+
+
+#========================================================================
+#                    Metrics to compare 2 columns
+#========================================================================
+
+
+def chi_2_col(col_X, col_Y):
+    """
+    col = np.array
+    
+    Returns chi2 value for 2 columns (formula ref_4)
+    """
+    nb_nuc = len(col_X)
+    N = sum(col_X) + sum(col_Y)
+    chi2col = 0
+    
+    for col in [col_X,col_Y]:
+        nk = sum(col)
+        
+        for nuc in range(nb_nuc):
+            nkb = col[nuc]
+            nekb = nk*nkb/float(N)
+            chi2_col_nuc = ((nkb - nekb)**2)/float(nekb)
+            chi2col += chi2_col_nuc
+            
+    return(chi2col)
+
+##########################################################################
+
+def SSD (col_X, col_Y):
+	SSD2=0
+	for Nucleotide in range(len(col_X)):
+		SSD2+= math.pow((col_X[Nucleotide]-col_Y[Nucleotide]),2)
+	#print SSD2
+	return 2-SSD2
+
+
+
+##########################################################################
+def PCC(col_X, col_Y):
+    """
+    input : PSSM with frequencies
+    returns pearson correlation coef
+    """
+    nb_nuc = len(col_X)
+    
+    mu = 1/float(nb_nuc)
+    col_X_centered = col_X - mu
+    col_Y_centered = col_Y - mu
+    numerateur = np.sum(col_X_centered * col_Y_centered )
+    denominateur = (np.sum(col_X_centered**2))*(np.sum(col_Y_centered**2))
+    
+    return( numerateur / float(denominateur))
+
+
+##########################################################################
+def AKL(col_X, col_Y):
+    """
+    input : PSSM with frequencies (with pseudocount > no zero !!)
+    returns Average Kullback–Leibler score (Ref4)
+    """
+    log_col_X = np.log(col_X)
+    log_col_Y = np.log(col_Y)
+    diff_log_XY = log_col_X - log_col_Y
+    
+    result = 10 - (np.sum(col_X * diff_log_XY) + np.sum(-col_Y * diff_log_XY))/float(2)
+    
+    return(result)
+    
+#<<<<<<< Updated upstream
+
+
+
+
+#========================================================================
+#                    Choice of metrics
+#========================================================================
+##########################################################################
+def ChooseMetric(col_X, col_Y,metric):
+    if metric =="SSD":
+        res= SSD(col_X, col_Y)
+    elif metric== "PCC":
+        res= PCC(col_X, col_Y)
+    elif metric== "AKL":
+        res= AKL(col_X, col_Y)
+    else:
+        print "ChooseMetric :: Error, model not found"
+    return res
+
+
+
+
+#========================================================================
+#                         Compare 2 PSSM
+#========================================================================
 
 ########################################################################
 
@@ -150,11 +255,22 @@ def Score_Calculator(PSSM1,PSSM2,gap,Metric):
 	v,imax,jmax=FindIndiceMax(m)
 	sa=backtrack(m,imax,jmax)
 	return v
+
+
 ########################################################################
-def Matix_Score(listPSSM):
+def listCombinaton(listPSSM):
+    #print list(range(0, len(listPSSM)))
+    listoflist=[]
+    for l in range(len(listPSSM)):
+        for k in range(l,len(listPSSM)):
+            listoflist.append([listPSSM[l],listPSSM[k]])
+    #print listoflist
+    return listoflist
+########################################################################
+def Matrix_Score(listPSSM):
     n=len(listPSSM)
-    Matix_Score=np.zeros((n,n))
-    List_Of_PSSM_Ind=listCombinaton(list(range(0, len(PSSM_all_freqs))))
+    Matrix_Score=np.zeros((n,n))
+    List_Of_PSSM_Ind=listCombinaton(list(range(0, len(listPSSM))))
     for Deux_PSSM in List_Of_PSSM_Ind:
         A=listPSSM[Deux_PSSM[0]]
         B=listPSSM[Deux_PSSM[1]]
@@ -163,11 +279,38 @@ def Matix_Score(listPSSM):
         else :
             score= Score_Calculator(B,A,-1,"SSD")
         #print Deux_PSSM,score
-        Matix_Score[(Deux_PSSM[0]),(Deux_PSSM[1])]=score
-        Matix_Score[(Deux_PSSM[1]),(Deux_PSSM[0])]=score
-    return  Matix_Score
+        Matrix_Score[(Deux_PSSM[0]),(Deux_PSSM[1])]=score
+        Matrix_Score[(Deux_PSSM[1]),(Deux_PSSM[0])]=score
+    return  Matrix_Score
+
+
+"""
+def Matrix_Score(listPSSM):
+    n=len(listPSSM)
+    Matrix_Score=np.zeros((n,n))
+
+    List_Of_PSSM_Ind=listCombinaton(list(range(0, len(PSSM_all_freqs))))
+    for Deux_PSSM in List_Of_PSSM_Ind:
+        A=listPSSM[Deux_PSSM[0]]
+        B=listPSSM[Deux_PSSM[1]]
+        if len(A)>len(B):
+            score= alignit(A,B,-1,"SSD")
+        else :
+            score= alignit(B,A,-1,"SSD")
+        Matrix_Score[Deux_PSSM[0]-1,Deux_PSSM[1]-1]=score
+    print Matrix_Score
+
+
+
+def Normalise_Mtrix_Score(MatixScore):
+"""
+
+
+
+"""
 ########################################################################
 #								Main
 ########################################################################
 
-print Matix_Score(PSSM_all_freqs)
+print Matrix_Score(PSSM_all_freqs)
+"""

@@ -122,6 +122,34 @@ def PSSM_freqs(PSSM_all, pseudocount):
 
 
 
+def PSSM_pseudocount_dict(PSSM_all, pseudocount):
+    """
+    pseudocount = float = number to add for pseudocount
+    returns PSSM_all with pseudocounts
+    """
+    PSSM_all_psc = {}
+    for k_PSSM in PSSM_all.keys():
+        npPSSM = np.array(PSSM_all[k_PSSM])
+        PSSM_all_psc[k_PSSM] = (npPSSM + pseudocount)
+    
+    return(PSSM_all_psc)
+
+
+
+def PSSM_freqs_dict(PSSM_all, pseudocount):
+    """
+    returns PSSM with each col as freq instead of count
+    (with pseudocounts)
+    """
+    PSSM_all_psc = PSSM_pseudocount_dict(PSSM_all, pseudocount)
+    
+    PSSM_all_f = {}
+    for k_PSSM in PSSM_all_psc.keys():
+        PSSM_colsums = np.sum(PSSM_all_psc[k_PSSM],0,dtype='float')
+        PSSM_all_f[k_PSSM] = (PSSM_all_psc[k_PSSM] / PSSM_colsums)
+    
+    return(PSSM_all_f)
+
 
 
 

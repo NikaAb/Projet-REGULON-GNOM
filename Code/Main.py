@@ -31,16 +31,39 @@ nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_p
 PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 
 
-test = parse_PSSM_set("./../Datas/RegulonDB_PSSMSet.txt")
+TF_Q1 = parse_PSSM_set("./../Datas/RegulonDB_PSSMSet.txt")
+TF_Q1_f = PSSM_freqs_dict(TF_Q1, 0.1)
 
+
+
+for PSSM1 in PSSM_all_freqs:
+	best_score = 0
+	best_TF = ""
+
+	for TF in TF_Q1_f.keys():
+		PSSM2 = TF_Q1_f[TF]
+		score = Score_Calculator(PSSM1,PSSM2,-1,"SSD")
+		if score > best_score:
+			best_TF = TF
+			best_score = score
+
+	print("Best TF is" + str(best_TF))
+
+
+"""
+Verification de l'import sous forme de dictionnaire
 count=0
-for key in test.keys():
+for key in TF_Q1_f.keys():
 	count +=1
 	print(key)
-	for l in test[key]:
-		print(l)
+	print(np.sum(TF_Q1_f[key],0))
+	for l in TF_Q1_f[key]:
+		print(np.round(l,3))
 
 print(count)
+"""
+
+
 """
 print("\n SSD Metric")
 Metric = "SSD"

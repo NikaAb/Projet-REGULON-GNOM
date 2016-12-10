@@ -37,10 +37,19 @@ TF_Q1_f = PSSM_freqs_dict(TF_Q1, 0.1)
 Results = []
 Metrics = ["SSD", "PCC", "AKL"]
 
-test = [(3.1,"foo"),(2.3,"hey")]
-index_hey = [i for i in range(len(test)) if test[i][1] == "hey"]
-print(index_hey[0])
+PSSM1 = PSSM_all_freqs[1]
+PSSM2 = TF_Q1_f["PhoB"]
+PSSM3 = TF_Q1_f["Fis"]
+"""
+m = alignit2(PSSM1,PSSM2,-1,"PCC")
+print(np.round(m,1))
 
+m = alignit2(PSSM1,PSSM3,-1,"PCC")
+print(np.round(m,1))
+
+v= Score_Calculator(PSSM1,PSSM2,-1,"SSD")
+print(v)
+"""
 
 for i in range(len(Metrics)):
 	Metric = Metrics[i]
@@ -54,7 +63,7 @@ for i in range(len(Metrics)):
 
 		for TF in TF_Q1_f.keys():
 			PSSM2 = TF_Q1_f[TF]
-			score = Score_Calculator(PSSM1,PSSM2,-1,Metric)
+			score = Score_Calculator(PSSM1,PSSM2,0,Metric)
 			res_PSSM.append((score,TF))
 			if score > best_score:
 				best_TF = TF

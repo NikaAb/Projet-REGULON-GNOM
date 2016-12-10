@@ -57,16 +57,27 @@ def PCC(col_X, col_Y):
     """
     nb_nuc = len(col_X)
     
-    mu = 1/float(nb_nuc)
+    #mu = 1/float(nb_nuc)
+    mu = np.array([0.250001,0.250001,0.249999,0.249999])
     col_X_centered = col_X - mu
+    #print(col_X_centered)
     col_Y_centered = col_Y - mu
     numerateur = np.sum(col_X_centered * col_Y_centered )
-    denominateur = (np.sum(col_X_centered**2))*(np.sum(col_Y_centered**2))
+    denominateur = max((np.sum(col_X_centered**2))*(np.sum(col_Y_centered**2)),0.0001)
     if numerateur == 0:
     	return 0
     else:
     	return( numerateur / float(denominateur))
 
+"""
+col_X = np.array([0.2,0.3,0.4,0.1])
+col_Y = np.array([0.19,0.29,0.41,0.11])
+print(PCC(col_X, col_Y))
+
+col_X = np.array([0.2,0.3,0.4,0.1])
+col_Y = np.array([0.01,0.09,0.10,0.8])
+print(PCC(col_X, col_Y))
+"""
 
 ##########################################################################
 def AKL(col_X, col_Y):
@@ -148,6 +159,8 @@ def alignit(PSSM1,PSSM2,gap,Metric):
 				m[i][j] = (distg, 'g')
 #				c[i][j] = 'g' # deletion
 	return (m)
+
+
 
 ########################################################################
 #Retrouver le chemin
@@ -237,11 +250,12 @@ def FindIndiceMax(matrix):
 		 		imax=i
 		 		jmax=j
 	return Valmax,imax,jmax
+
 ########################################################################
 def Score_Calculator(PSSM1,PSSM2,gap,Metric):
 	m= alignit(PSSM1,PSSM2,gap,Metric)
 	v,imax,jmax=FindIndiceMax(m)
-	sa=backtrack(m,imax,jmax)
+	#sa=backtrack(m,imax,jmax)
 	return v
 
 

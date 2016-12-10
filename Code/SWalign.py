@@ -62,8 +62,10 @@ def PCC(col_X, col_Y):
     col_Y_centered = col_Y - mu
     numerateur = np.sum(col_X_centered * col_Y_centered )
     denominateur = (np.sum(col_X_centered**2))*(np.sum(col_Y_centered**2))
-    
-    return( numerateur / float(denominateur))
+    if numerateur == 0:
+    	return 0
+    else:
+    	return( numerateur / float(denominateur))
 
 
 ##########################################################################

@@ -48,6 +48,51 @@ def parse_PSSM(filename):
 	return(nuc, PSSM_all)
 
 
+
+def parse_PSSM_set(filename):
+	"""
+	# Input
+	filename : string : filename of TXT file of PSSM Set
+
+	# Output
+	PSSM_all : list of all PSSM
+	"""
+	f = open(filename, 'r')
+	PSSM_all = {}
+	outside_PSSM = True
+	outside_weights = True
+
+	l = f.readline()
+	while(l):
+		if l[0] != "#":
+			if outside_PSSM:
+				if l[0:26] == "Transcription Factor Name:":
+					ID = l[27:(len(l)-1)]
+					PSSM = []
+					#print(ID)
+					outside_PSSM = False
+			else:
+				if l[0] == 'a':
+					outside_weights = False
+				if not(outside_weights):
+
+					weights = l.replace("\n","").replace("\t|","").split("\t")[1:len(l)]
+					#print(weights)
+					PSSM.append([int(w) for w in weights])
+					if l[0] == 't':
+						PSSM_all[ID] = PSSM
+						outside_PSSM = True
+						outside_weights = True
+			
+		l = f.readline()
+
+	f.close()
+
+	return(PSSM_all)
+
+
+
+
 def PSSM_pseudocount(PSSM_all, pseudocount):
     """
     pseudocount = float = number to add for pseudocount

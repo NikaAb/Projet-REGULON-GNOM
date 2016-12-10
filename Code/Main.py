@@ -30,21 +30,28 @@ nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_p
 #nuc, PSSM_all = parse_PSSM("./../Datas/test.txt")
 PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 
-#print(nuc)
-print PSSM_all_freqs[0] # un PPSM 
-print PSSM_all_freqs[1] # un autre PSSM ! 
 
+test = parse_PSSM_set("./../Datas/RegulonDB_PSSMSet.txt")
+
+count=0
+for key in test.keys():
+	count +=1
+	print(key)
+	for l in test[key]:
+		print(l)
+
+print(count)
 """
 print("\n SSD Metric")
 Metric = "SSD"
 print(Matrix_Score(PSSM_all_freqs,Metric))
-"""
+
 
 print("\n PCC Metric")
 Metric = "PCC"
 print(Matrix_Score(PSSM_all_freqs,Metric))
 
-"""
+
 print("\n AKL Metric")
 Metric = "AKL"
 print(Matrix_Score(PSSM_all_freqs,Metric))

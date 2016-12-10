@@ -34,20 +34,42 @@ PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 TF_Q1 = parse_PSSM_set("./../Datas/RegulonDB_PSSMSet.txt")
 TF_Q1_f = PSSM_freqs_dict(TF_Q1, 0.1)
 
+Results = []
+Metrics = ["SSD", "PCC", "AKL"]
+
+test = [(3.1,"foo"),(2.3,"hey")]
+index_hey = [i for i in range(len(test)) if test[i][1] == "hey"]
+print(index_hey[0])
 
 
-for PSSM1 in PSSM_all_freqs:
-	best_score = 0
-	best_TF = ""
+for i in range(len(Metrics)):
+	Metric = Metrics[i]
+	res_all = []
+	print("#####################" + Metric)
 
-	for TF in TF_Q1_f.keys():
-		PSSM2 = TF_Q1_f[TF]
-		score = Score_Calculator(PSSM1,PSSM2,-1,"SSD")
-		if score > best_score:
-			best_TF = TF
-			best_score = score
+	for PSSM1 in PSSM_all_freqs:
+		res_PSSM = []
+		best_score = 0
+		best_TF = ""
 
-	print("Best TF is" + str(best_TF))
+		for TF in TF_Q1_f.keys():
+			PSSM2 = TF_Q1_f[TF]
+			score = Score_Calculator(PSSM1,PSSM2,-1,Metric)
+			res_PSSM.append((score,TF))
+			if score > best_score:
+				best_TF = TF
+				best_score = score
+			if TF == "PhoB":
+				score_phob = score
+
+		print("Best TF is " + str(best_TF) + " with score " + str(best_score) + " while PhoB has score = " +str(score_phob))
+		res_PSSM_sorted = sorted(res_PSSM)[::-1]
+		index_PhoB = [i for i in range(len(res_PSSM_sorted)) if res_PSSM_sorted[i][1] == "PhoB"]
+		print( "PhoB is " + str(index_PhoB[0]-1) + " / " + str(len(res_PSSM_sorted)))
+		res_all.append(res_PSSM_sorted)
+		#print(res_PSSM_sorted[0:10])
+
+	Results.append(res_all)
 
 
 """

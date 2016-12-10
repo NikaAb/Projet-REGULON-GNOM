@@ -150,23 +150,6 @@ def alignit(PSSM1,PSSM2,gap,Metric):
 	return (m)
 
 ########################################################################
-def substitue(res1, res2,subs):
-	score= subs[findIndice(res1),findIndice(res2)]
-	return score
-
-########################################################################
-
-def findIndice(res):
-	if res=="A":
-		Indice=0
-	elif res =="T":
-		Indice=1
-	elif res=="G":
-		Indice=2
-	else:
-		Indice =3
-	return Indice
-########################################################################
 #Retrouver le chemin
 def backtrack(m, imax,jmax):
 	#print "distance = ",m[len(s1)][len(s2)]

@@ -90,6 +90,9 @@ def AKL(col_X, col_Y):
 #========================================================================
 ##########################################################################
 def ChooseMetric(col_X, col_Y,metric):
+    """
+    Metric : possible choices : SSD , PCC, AKL
+    """
     if metric =="SSD":
         res= SSD(col_X, col_Y)
     elif metric== "PCC":
@@ -267,7 +270,10 @@ def listCombinaton(listPSSM):
     #print listoflist
     return listoflist
 ########################################################################
-def Matrix_Score(listPSSM):
+def Matrix_Score(listPSSM, Metric):
+    """
+    Metric : possible choices : SSD , PCC, AKL
+    """
     n=len(listPSSM)
     Matrix_Score=np.zeros((n,n))
     List_Of_PSSM_Ind=listCombinaton(list(range(0, len(listPSSM))))
@@ -275,9 +281,9 @@ def Matrix_Score(listPSSM):
         A=listPSSM[Deux_PSSM[0]]
         B=listPSSM[Deux_PSSM[1]]
         if len(A)>len(B):
-            score= Score_Calculator(A,B,-1,"SSD")
+            score= Score_Calculator(A,B,-1,Metric)
         else :
-            score= Score_Calculator(B,A,-1,"SSD")
+            score= Score_Calculator(B,A,-1,Metric)
         #print Deux_PSSM,score
         Matrix_Score[(Deux_PSSM[0]),(Deux_PSSM[1])]=score
         Matrix_Score[(Deux_PSSM[1]),(Deux_PSSM[0])]=score

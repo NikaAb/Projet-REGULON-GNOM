@@ -34,7 +34,21 @@ PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 print PSSM_all_freqs[0] # un PPSM 
 print PSSM_all_freqs[1] # un autre PSSM ! 
 
-print(Matrix_Score(PSSM_all_freqs))
+
+print("\n SSD Metric")
+Metric = "SSD"
+print(Matrix_Score(PSSM_all_freqs,Metric))
+
+np.seterr(all='print')
+print("\n PCC Metric")
+Metric = "PCC"
+print(Matrix_Score(PSSM_all_freqs,Metric))
+
+
+print("\n AKL Metric")
+Metric = "AKL"
+print(Matrix_Score(PSSM_all_freqs,Metric))
+
 
 """
 for PSSM  in PSSM_all:

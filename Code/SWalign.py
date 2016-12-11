@@ -10,7 +10,7 @@ Nika Abdollahi & Melissa Cardon
 import numpy as np
 import sys
 import math
-
+from f_import2 import *
 
 #========================================================================
 #                    Metrics to compare 2 columns
@@ -176,7 +176,8 @@ def backtrack(m, imax,jmax):
 	i =imax
 	#len(m)-1
 	chemin = ''
-	while (i != 0 or j != 0):
+	#while (m[i][j][0] != 0 or j != 0):
+	while (m[i][j][0]):
 		if i < 0 or j < 0:
 			print "backtrack:: ERROR i or j <0",i,j
 			exit(1)
@@ -204,8 +205,8 @@ def backtrack(m, imax,jmax):
 				i = i-1
 				chemin = 'h'+chemin
 		#print i,j
-	#print chemin
-	return chemin
+	#print len(chemin)
+	return chemin,(len(chemin))
 
 
 ########################################################################
@@ -253,10 +254,15 @@ def FindIndiceMax(matrix):
 
 ########################################################################
 def Score_Calculator(PSSM1,PSSM2,gap,Metric):
-	m= alignit(PSSM1,PSSM2,gap,Metric)
-	v,imax,jmax=FindIndiceMax(m)
-	#sa=backtrack(m,imax,jmax)
-	return v
+	if len(PSSM1)> len(PSSM2):
+		m= alignit(PSSM1,PSSM2,gap,Metric)
+		v,imax,jmax=FindIndiceMax(m)
+		sa,b=backtrack(m,imax,jmax)
+	else:
+		m= alignit(PSSM2,PSSM1,gap,Metric)
+		v,imax,jmax=FindIndiceMax(m)
+		sa,b=backtrack(m,imax,jmax)
+	return (v/float(b))
 
 
 ########################################################################
@@ -269,53 +275,79 @@ def listCombinaton(listPSSM):
     #print listoflist
     return listoflist
 ########################################################################
-def Matrix_Score(listPSSM, Metric):
+def Matrix_Score(listPSSM,B, Metric):
     """
     Metric : possible choices : SSD , PCC, AKL
     """
+    list1=[]
     n=len(listPSSM)
     Matrix_Score=np.zeros((n,n))
-    List_Of_PSSM_Ind=listCombinaton(list(range(0, len(listPSSM))))
-    for Deux_PSSM in List_Of_PSSM_Ind:
-        A=listPSSM[Deux_PSSM[0]]
-        B=listPSSM[Deux_PSSM[1]]
+    for i in range(len(listPSSM)):
+    #List_Of_PSSM_Ind=listCombinaton(list(range(0, len(listPSSM))))
+    #for Deux_PSSM in List_Of_PSSM_Ind:
+        A=listPSSM[i]
+        #B=listPSSM[Deux_PSSM[1]]
         if len(A)>len(B):
-            score= Score_Calculator(A,B,-1,Metric)
+            score=2-Score_Calculator(A,B,-1,Metric)
         else :
-            score= Score_Calculator(B,A,-1,Metric)
+            score=2- Score_Calculator(B,A,-1,Metric)
+        print score,A
         #print Deux_PSSM,score
-        Matrix_Score[(Deux_PSSM[0]),(Deux_PSSM[1])]=score
-        Matrix_Score[(Deux_PSSM[1]),(Deux_PSSM[0])]=score
-    return  Matrix_Score
+        #Matrix_Score[(Deux_PSSM[0]),(Deux_PSSM[1])]=score
+        #Matrix_Score[(Deux_PSSM[1]),(Deux_PSSM[0])]=score
+    	list1.append(score)
+    #print Matrix_Score
+    #return  Matrix_Score
+    return list1
 
+
+
+
+
+##################
+
+
+
+#nuc, PSSM_all = parse_PSSM("./Datas/Q1_PSSM.txt")
+#nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
+#nuc, PSSM_all = parse_PSSM("oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
+#PSSMTF = parse_PSSM_set("RegulonDB_PSSMSet.txt")
+#TF_Q1_f = PSSM_freqs_dict(PSSMTF, 0.1)
+#print TF_Q1_f.keys()
+#A= (TF_Q1_f['EvgA'])
+#PhoB
+#nuc, PSSM_all = parse_PSSM("./../Datas/test.txt")
+#PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
+#print PSSM_all_freqs
+"""
+#print(nuc)
+print "A"
+#A= PSSM_all[0] # un PPSM 
+for l in A:
+	print  l
+print "B"
+B=PSSM_all_freqs[4]# un autre PSSM ! 
+print("     ")
+for l in B:
+	print   l
 
 """
-def Matrix_Score(listPSSM):
-    n=len(listPSSM)
-    Matrix_Score=np.zeros((n,n))
 
-    List_Of_PSSM_Ind=listCombinaton(list(range(0, len(PSSM_all_freqs))))
-    for Deux_PSSM in List_Of_PSSM_Ind:
-        A=listPSSM[Deux_PSSM[0]]
-        B=listPSSM[Deux_PSSM[1]]
-        if len(A)>len(B):
-            score= alignit(A,B,-1,"SSD")
-        else :
-            score= alignit(B,A,-1,"SSD")
-        Matrix_Score[Deux_PSSM[0]-1,Deux_PSSM[1]-1]=score
-    print Matrix_Score
+#Afreq=PSSM_freqs(A, 0.1)
+""""
+print Afreq
 
 
-
-def Normalise_Mtrix_Score(MatixScore):
+align1= alignit(Afreq[1],Afreq[1],-1,"SSD")
+#print align1
+print("     ")
+for l in align1:
+	print l 
+m, imax,jmax= FindIndiceMax(align1)
+t,j= backtrack(align1, imax,jmax)
 """
+#A= (TF_Q1_f['Fis'])
 
 
-
-"""
-########################################################################
-#								Main
-########################################################################
-
-print Matrix_Score(PSSM_all_freqs)
-"""
+#Matrix_Score=Matrix_Score(PSSM_all_freqs,A, "SSD")
+#print Matrix_Score

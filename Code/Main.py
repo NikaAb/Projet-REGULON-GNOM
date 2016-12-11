@@ -51,6 +51,26 @@ v= Score_Calculator(PSSM1,PSSM2,-1,"SSD")
 print(v)
 """
 
+
+
+dico_pssm1={}
+g=0
+for PSSM1 in PSSM_all_freqs:
+	g+=1
+	dico_Score={}
+	for TF in TF_Q1_f.keys():
+		PSSM2 = TF_Q1_f[TF]
+		score = Score_Calculator(PSSM1,PSSM2,-10,"SSD")
+		dico_Score[TF]=score
+	dico_pssm1[g]=dico_Score
+print "Metric : SSD"
+#print dico_pssm1
+for key in dico_pssm1.keys():
+	d=dico_pssm1[key]
+	#print max(d, key=d.get)
+	print("For PSSM " +str(key)+" the best TF is " + str(max(d, key=d.get)) + " with score "+ str(d[max(d, key=d.get)]))
+"""
+
 for i in range(len(Metrics)):
 	Metric = Metrics[i]
 	res_all = []
@@ -64,6 +84,7 @@ for i in range(len(Metrics)):
 		for TF in TF_Q1_f.keys():
 			PSSM2 = TF_Q1_f[TF]
 			score = Score_Calculator(PSSM1,PSSM2,0,Metric)
+			print score
 			res_PSSM.append((score,TF))
 			if score > best_score:
 				best_TF = TF
@@ -80,8 +101,6 @@ for i in range(len(Metrics)):
 
 	Results.append(res_all)
 
-
-"""
 Verification de l'import sous forme de dictionnaire
 count=0
 for key in TF_Q1_f.keys():
@@ -160,16 +179,3 @@ print("AKL col_Y",AKL(col_Y, col_Y))
 
 
 """
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,36 @@
+; convert-matrix  -v 1 -i $RSAT/public_html/tmp/apache/2016/12/12/oligo-analysis_2016-12-12.090015_1AxbMv_pssm_count_matrices.tf -from transfac -to tab -return counts -o $RSAT/public_html/tmp/apache/2016/12/12/oligo-analysis_2016-12-12.090015_1AxbMv_pssm_count_matrices.txt
+; Input files
+;	input	/export/space7/rsa-tools/public_html/tmp/apache/2016/12/12/oligo-analysis_2016-12-12.090015_1AxbMv_pssm_count_matrices.tf
+; Input format        	transfac
+; Output files
+;	output	/export/space7/rsa-tools/public_html/tmp/apache/2016/12/12/oligo-analysis_2016-12-12.090015_1AxbMv_pssm_count_matrices.txt
+; Output format       	tab
+; pseudo-weight       	1
+a	2	2	2	0	2	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0
+c	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	2	0	2	2
+g	0	0	0	0	0	2	0	2	2	2	2	2	0	0	0	0	0	0	0	0
+t	0	0	0	0	0	0	0	0	0	0	0	0	2	2	2	2	0	2	0	0
+//
+a	11	4	1	0	0	0	15	0	0	15	15	0	0
+c	0	0	2	2	14	0	0	0	15	0	0	0	3
+g	1	9	11	10	0	15	0	1	0	0	0	4	10
+t	3	2	1	3	1	0	0	14	0	0	0	11	2
+//
+a	0	0	0	0	0	0	0	0	0	0
+c	0	2	8	8	0	0	8	0	0	3
+g	2	2	0	0	8	8	0	0	4	2
+t	6	4	0	0	0	0	0	8	4	3
+//
+a	0	0	0	0	0	0	0	0	0	0
+c	0	4	0	4	4	4	0	0	4	0
+g	0	0	0	0	0	0	4	4	0	2
+t	4	0	4	0	0	0	0	0	0	2
+//
+; Host name	miztli.nnb.unam.mx
+; Job started	2016-12-12.090021
+; Job done	2016-12-12.090021
+; Seconds	0.29
+;	user	0.29
+;	system	0.02
+;	cuser	0
+;	csystem	0

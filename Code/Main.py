@@ -25,21 +25,36 @@ from f_cluster import *
 ##########################################################################
 #>>>>>>> Stashed changes
 
-#nuc, PSSM_all = parse_PSSM("./Datas/Q1_PSSM.txt")
-nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
-#nuc, PSSM_all = parse_PSSM("./../Datas/test.txt")
-PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 
+nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
+#PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 
 TF_Q1 = parse_PSSM_set("./../Datas/RegulonDB_PSSMSet.txt")
 TF_Q1_f = PSSM_freqs_dict(TF_Q1, 0.1)
 
-Results = []
-Metrics = ["SSD", "PCC", "AKL"]
+Bact = ["actinobacteria","cyanobacteria","firmicutes","proteobacteria"]
+Prot = ["PhoA","PhoD","PhoX"]
 
-PSSM1 = PSSM_all_freqs[1]
-PSSM2 = TF_Q1_f["PhoB"]
-PSSM3 = TF_Q1_f["Fis"]
+PSSM_dict = create_dict_result2(Bact, Prot)
+nb_PSSM = len(PSSM_dict)
+
+affinity_matrix = np.zeros((nb_PSSM,nb_PSSM))
+
+for i in range(nb_PSSM):
+	for j in range(nb_PSSM):
+		if i<=j:
+			affinity_matrix[i,j] = Score_Calculator(PSSM_dict[i][0],PSSM_dict[j][0],-10,"SSD")
+			affinity_matrix[j,i] = affinity_matrix[i,j]
+
+
+np.save("./../Datas/Q2/Q2_affinity_matrix.npy",affinity_matrix)
+np.savetxt("./../Datas/Q2/Q2_affinity_matrix.txt",affinity_matrix)
+
+
+
+#oligo-analysis_PhoA_actinobacteria_pssm_count_matrices.txt
+
+
 """
 m = alignit2(PSSM1,PSSM2,-1,"PCC")
 print(np.round(m,1))
@@ -52,6 +67,10 @@ print(v)
 """
 
 
+"""
+
+TF_Q1 = parse_PSSM_set("./../Datas/RegulonDB_PSSMSet.txt")
+TF_Q1_f = PSSM_freqs_dict(TF_Q1, 0.1)
 
 dico_pssm1={}
 g=0
@@ -69,7 +88,16 @@ for key in dico_pssm1.keys():
 	d=dico_pssm1[key]
 	#print max(d, key=d.get)
 	print("For PSSM " +str(key)+" the best TF is " + str(max(d, key=d.get)) + " with score "+ str(d[max(d, key=d.get)]))
+
 """
+
+"""
+Results = []
+Metrics = ["SSD", "PCC", "AKL"]
+
+PSSM1 = PSSM_all_freqs[1]
+PSSM2 = TF_Q1_f["PhoB"]
+PSSM3 = TF_Q1_f["Fis"]
 
 for i in range(len(Metrics)):
 	Metric = Metrics[i]

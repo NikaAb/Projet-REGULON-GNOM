@@ -27,19 +27,11 @@ Further, the memory complexity is of the order O(N^2) if a dense similarity matr
 but reducible if a sparse similarity matrix is used. 
 This makes Affinity Propagation most appropriate for small to medium sized datasets.
 
-http://stackoverflow.com/questions/35494458/affinity-propagation-in-python
-
-Attention le input doit etre des distance et pas des similarite (diagonale = 0)
+En fait il faut des matrice de similarite et le stackoverflow est faux !!
 """
+def Aff_prop(affinity_matrix):
+	calcul_clusters_Aff_prop = skclust.AffinityPropagation(affinity='precomputed').fit(affinity_matrix)
+	clusters_Aff_prop = calcul_clusters_Aff_prop.labels_
+	return(clusters_Aff_prop)
 
-## Fake distance matrix
-sim_matrix = np.ones((10,10))
-for i in range(10):
-    for j in range(10):
-        if j<i:
-            rnumb = np.random.rand()
-            sim_matrix[i,j] = rnumb
-            sim_matrix[j,i] = rnumb
 
-calcul_clusters_Aff_prop = skclust.AffinityPropagation(affinity='precomputed').fit(sim_matrix)
-clusters_Aff_prop = calcul_clusters_Aff_prop.labels_

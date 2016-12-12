@@ -25,7 +25,14 @@ from f_cluster import *
 ##########################################################################
 #>>>>>>> Stashed changes
 
+affinity_matrix = np.load("./../Datas/Q2/Q2_affinity_matrix.npy")
 
+clusters_Aff_prop = Aff_prop(affinity_matrix)
+
+print(clusters_Aff_prop)
+print(affinity_matrix[0:6,0:6])
+
+"""
 nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
 #PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 
@@ -50,7 +57,7 @@ for i in range(nb_PSSM):
 np.save("./../Datas/Q2/Q2_affinity_matrix.npy",affinity_matrix)
 np.savetxt("./../Datas/Q2/Q2_affinity_matrix.txt",affinity_matrix)
 
-
+"""
 
 #oligo-analysis_PhoA_actinobacteria_pssm_count_matrices.txt
 

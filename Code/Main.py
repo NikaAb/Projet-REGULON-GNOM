@@ -60,7 +60,7 @@ for i in range(nb_PSSM):
 	print(i)
 	for j in range(nb_PSSM):
 		if i<=j:
-			affinity_matrix[i,j] = Score_Calculator(PSSM_dict[i][0],PSSM_dict[j][0],-10,"PCC")
+			affinity_matrix[i,j] = Score_Calculator(PSSM_dict[i][0],PSSM_dict[j][0],-1,"PCC")
 			affinity_matrix[j,i] = affinity_matrix[i,j]
 
 

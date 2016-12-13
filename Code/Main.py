@@ -24,13 +24,15 @@ from f_cluster import *
 
 ##########################################################################
 #>>>>>>> Stashed changes
-
+"""
 affinity_matrix = np.load("./../Datas/Q2/Q2_affinity_matrix.npy")
 
 clusters_Aff_prop = Aff_prop(affinity_matrix)
 
 print(clusters_Aff_prop)
 print(affinity_matrix[0:6,0:6])
+"""
+
 
 """
 nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
@@ -75,6 +77,8 @@ print(v)
 
 
 """
+nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
+PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 
 TF_Q1 = parse_PSSM_set("./../Datas/RegulonDB_PSSMSet.txt")
 TF_Q1_f = PSSM_freqs_dict(TF_Q1, 0.1)
@@ -98,28 +102,37 @@ for key in dico_pssm1.keys():
 
 """
 
-"""
-Results = []
-Metrics = ["SSD", "PCC", "AKL"]
 
-PSSM1 = PSSM_all_freqs[1]
-PSSM2 = TF_Q1_f["PhoB"]
-PSSM3 = TF_Q1_f["Fis"]
+nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
+PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
+PSSM_all_psc = PSSM_pseudocount(PSSM_all, 0.1)
+
+TF_Q1 = parse_PSSM_set("./../Datas/RegulonDB_PSSMSet.txt")
+TF_Q1_f = PSSM_freqs_dict(TF_Q1, 0.1)
+TF_Q1_psc = PSSM_pseudocount_dict(TF_Q1, 0.1)
+
+gap_penalty = -1
+Results = []
+#Metrics = ["SSD", "PCC", "AKL"]
+Metrics = ["Chi2"]
+
 
 for i in range(len(Metrics)):
 	Metric = Metrics[i]
 	res_all = []
 	print("#####################" + Metric)
 
-	for PSSM1 in PSSM_all_freqs:
+	for PSSM1 in PSSM_all_psc:
+
+	#for PSSM1 in PSSM_all_freqs:
 		res_PSSM = []
 		best_score = 0
 		best_TF = ""
 
-		for TF in TF_Q1_f.keys():
-			PSSM2 = TF_Q1_f[TF]
-			score = Score_Calculator(PSSM1,PSSM2,0,Metric)
-			print score
+		for TF in TF_Q1_psc.keys():
+			PSSM2 = TF_Q1_psc[TF]
+			score = Score_Calculator(PSSM1,PSSM2,gap_penalty,Metric)
+			#print score
 			res_PSSM.append((score,TF))
 			if score > best_score:
 				best_TF = TF
@@ -127,15 +140,18 @@ for i in range(len(Metrics)):
 			if TF == "PhoB":
 				score_phob = score
 
-		print("Best TF is " + str(best_TF) + " with score " + str(best_score) + " while PhoB has score = " +str(score_phob))
+		print("\nBest TF is " + str(best_TF) + " with score " + str(best_score) + " while PhoB has score = " +str(score_phob))
 		res_PSSM_sorted = sorted(res_PSSM)[::-1]
 		index_PhoB = [i for i in range(len(res_PSSM_sorted)) if res_PSSM_sorted[i][1] == "PhoB"]
-		print( "PhoB is " + str(index_PhoB[0]-1) + " / " + str(len(res_PSSM_sorted)))
+		print( "PhoB is " + str(index_PhoB[0]+1) + " / " + str(len(res_PSSM_sorted)))
 		res_all.append(res_PSSM_sorted)
-		#print(res_PSSM_sorted[0:10])
+		print(res_PSSM_sorted[0:5])
+
 
 	Results.append(res_all)
 
+
+"""
 Verification de l'import sous forme de dictionnaire
 count=0
 for key in TF_Q1_f.keys():

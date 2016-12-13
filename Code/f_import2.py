@@ -160,12 +160,13 @@ def create_dict_result2(Bact, Prot):
 	count = 0
 	for b in Bact:
 		for p in Prot:
-			nuc, PSSM_all = parse_PSSM("./../Datas/Q2/PSSM/oligo-analysis_"+ p + "_" + b +"_pssm_count_matrices.txt")
-			PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
+			for c in ["","2"]:
+				nuc, PSSM_all = parse_PSSM("./../Datas/Q2/PSSM/oligo-analysis_"+ p +"_" + b + c +"_pssm_count_matrices.txt")
+				PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 
-			for PSSM in PSSM_all_freqs:
-				PSSM_dict[count] = (PSSM, b, p)
-				count += 1
+				for PSSM in PSSM_all_freqs:
+					PSSM_dict[count] = (PSSM, b, p)
+					count += 1
 
 	return(PSSM_dict)
 

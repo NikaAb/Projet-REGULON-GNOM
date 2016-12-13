@@ -34,7 +34,7 @@ print(affinity_matrix[0:6,0:6])
 """
 
 
-"""
+
 nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
 #PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 
@@ -46,20 +46,22 @@ Prot = ["PhoA","PhoD","PhoX"]
 
 PSSM_dict = create_dict_result2(Bact, Prot)
 nb_PSSM = len(PSSM_dict)
+print(nb_PSSM)
 
 affinity_matrix = np.zeros((nb_PSSM,nb_PSSM))
 
 for i in range(nb_PSSM):
+	print(i)
 	for j in range(nb_PSSM):
 		if i<=j:
-			affinity_matrix[i,j] = Score_Calculator(PSSM_dict[i][0],PSSM_dict[j][0],-10,"SSD")
+			affinity_matrix[i,j] = Score_Calculator(PSSM_dict[i][0],PSSM_dict[j][0],-10,"PCC")
 			affinity_matrix[j,i] = affinity_matrix[i,j]
 
 
-np.save("./../Datas/Q2/Q2_affinity_matrix.npy",affinity_matrix)
-np.savetxt("./../Datas/Q2/Q2_affinity_matrix.txt",affinity_matrix)
+np.save("./../Datas/Q2/Q2_affinity_matrix_new.npy",affinity_matrix)
+np.savetxt("./../Datas/Q2/Q2_affinity_matrix_new.txt",affinity_matrix)
 
-"""
+
 
 #oligo-analysis_PhoA_actinobacteria_pssm_count_matrices.txt
 
@@ -102,7 +104,7 @@ for key in dico_pssm1.keys():
 
 """
 
-
+"""
 nuc, PSSM_all = parse_PSSM("./../Datas/oligo-analysis_2016-11-30.180333_2GFaRb_pssm_count_matrices.txt")
 PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 PSSM_all_psc = PSSM_pseudocount(PSSM_all, 0.1)
@@ -149,7 +151,7 @@ for i in range(len(Metrics)):
 
 
 	Results.append(res_all)
-
+"""
 
 """
 Verification de l'import sous forme de dictionnaire

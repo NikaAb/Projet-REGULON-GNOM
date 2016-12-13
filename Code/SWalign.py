@@ -266,7 +266,10 @@ def Score_Calculator(PSSM1,PSSM2,gap,Metric):
 		m= alignit(PSSM2,PSSM1,gap,Metric)
 		v,imax,jmax=FindIndiceMax(m)
 		sa,b=backtrack(m,imax,jmax)
-	return (v/float(b))
+	if float(b) != 0.:
+		return (v/float(b))
+	else:
+		return 0
 
 
 ########################################################################

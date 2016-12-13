@@ -46,6 +46,12 @@ Prot = ["PhoA","PhoD","PhoX"]
 
 PSSM_dict = create_dict_result2(Bact, Prot)
 nb_PSSM = len(PSSM_dict)
+
+for TF_i in TF_Q1_f.keys():
+	PSSM_dict[nb_PSSM] = (TF_Q1_f[TF_i],"E_coli",str(TF_i))
+	nb_PSSM +=1
+
+nb_PSSM = len(PSSM_dict)
 print(nb_PSSM)
 
 affinity_matrix = np.zeros((nb_PSSM,nb_PSSM))

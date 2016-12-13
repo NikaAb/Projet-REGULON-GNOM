@@ -11,7 +11,7 @@ import numpy as np
 import sys
 import math
 from f_import2 import *
-
+from scipy.stats.stats import pearsonr
 #========================================================================
 #                    Metrics to compare 2 columns
 #========================================================================
@@ -54,7 +54,6 @@ def PCC(col_X, col_Y):
     """
     input : PSSM with frequencies
     returns pearson correlation coef
-    """
     nb_nuc = len(col_X)
     
     #mu = 1/float(nb_nuc)
@@ -68,6 +67,9 @@ def PCC(col_X, col_Y):
     	return 0
     else:
     	return( numerateur / float(denominateur))
+"""
+    return (np.float(pearsonr(col_X,col_Y)[0]))
+
 
 """
 col_X = np.array([0.2,0.3,0.4,0.1])
@@ -107,7 +109,7 @@ def ChooseMetric(col_X, col_Y,metric):
     Metric : possible choices : SSD , PCC, AKL
     """
     if metric =="SSD":
-        res= SSD(col_X, col_Y)
+        res= SSD(col_X, col_Y)/2
     elif metric== "PCC":
         res= PCC(col_X, col_Y)
     elif metric== "AKL":
@@ -275,32 +277,42 @@ def listCombinaton(listPSSM):
     #print listoflist
     return listoflist
 ########################################################################
-def Matrix_Score(listPSSM,B, Metric):
+def Matrix_Score(listPSSM, Metric):
     """
     Metric : possible choices : SSD , PCC, AKL
     """
+
+
     list1=[]
+
+
     n=len(listPSSM)
-    Matrix_Score=np.zeros((n,n))
+    #Matrix_Score=np.zeros((n,n))
     for i in range(len(listPSSM)):
-    #List_Of_PSSM_Ind=listCombinaton(list(range(0, len(listPSSM))))
-    #for Deux_PSSM in List_Of_PSSM_Ind:
+    	List_Of_PSSM_Ind=listCombinaton(list(range(0, len(listPSSM))))
+    for Deux_PSSM in List_Of_PSSM_Ind:
+
+        #A=listPSSM[Deux_PSSM[0]]
+
+
         A=listPSSM[i]
-        #B=listPSSM[Deux_PSSM[1]]
+
+
+        B=listPSSM[Deux_PSSM[1]]
         if len(A)>len(B):
-            score=2-Score_Calculator(A,B,-1,Metric)
+            score=Score_Calculator(A,B,-1,Metric)
         else :
-            score=2- Score_Calculator(B,A,-1,Metric)
-        print score,A
+            score=Score_Calculator(B,A,-1,Metric)
+        #print score,A
         #print Deux_PSSM,score
         #Matrix_Score[(Deux_PSSM[0]),(Deux_PSSM[1])]=score
         #Matrix_Score[(Deux_PSSM[1]),(Deux_PSSM[0])]=score
+
     	list1.append(score)
+
     #print Matrix_Score
     #return  Matrix_Score
     return list1
-
-
 
 
 
@@ -319,23 +331,22 @@ def Matrix_Score(listPSSM,B, Metric):
 #nuc, PSSM_all = parse_PSSM("./../Datas/test.txt")
 #PSSM_all_freqs = PSSM_freqs(PSSM_all, 0.1)
 #print PSSM_all_freqs
-"""
+
 #print(nuc)
-print "A"
+#print "A"
 #A= PSSM_all[0] # un PPSM 
-for l in A:
-	print  l
-print "B"
-B=PSSM_all_freqs[4]# un autre PSSM ! 
-print("     ")
-for l in B:
-	print   l
+#for l in A:
+#	print  l
+#print "B"
+#B=PSSM_all_freqs[4]# un autre PSSM ! 
+#print("     ")
+#for l in B:
+#	print   l
 
 """
 
 #Afreq=PSSM_freqs(A, 0.1)
-""""
-print Afreq
+#print Afreq
 
 
 align1= alignit(Afreq[1],Afreq[1],-1,"SSD")
@@ -345,9 +356,8 @@ for l in align1:
 	print l 
 m, imax,jmax= FindIndiceMax(align1)
 t,j= backtrack(align1, imax,jmax)
-"""
 #A= (TF_Q1_f['Fis'])
 
-
-#Matrix_Score=Matrix_Score(PSSM_all_freqs,A, "SSD")
+"""
+#Matrix_Score=Matrix_Score(PSSM_all_freqs, "PCC")
 #print Matrix_Score

@@ -114,6 +114,8 @@ def ChooseMetric(col_X, col_Y,metric):
         res= PCC(col_X, col_Y)
     elif metric== "AKL":
         res= AKL(col_X, col_Y)
+    elif metric == "Chi2":
+        res= chi_2_col(col_X, col_Y)
     else:
         print "ChooseMetric :: Error, model not found"
     return res
